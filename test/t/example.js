@@ -9,7 +9,7 @@ var CONSUMER_KEY = 'dpf43f3p2l4k3l03',
     url = require('url'),
     test_request = require('request').test_request,
     oauth_request = require('request').oauth_request,
-    OAuthClient = require('oauth-client'),
+    qsparse = require('querystring').parse,
     start_server = require('example').start_server;
 
 
@@ -30,7 +30,7 @@ start_server(function(server) {
             assert.equal(resp.headers['content-type'],
                 'application/x-www-form-urlencoded');
 
-            var result = OAuthClient.getParameterMap(OAuthClient.decodeForm(body));
+            var result = qsparse(body);
             assert.equal(result.oauth_token, 'hh5s93j4hdidpola');
             assert.equal(result.oauth_token_secret, 'hdhd0244k9j7ao03');
             assert.equal(result.oauth_callback_confirmed, 'true');
@@ -68,8 +68,7 @@ start_server(function(server) {
                             assert.equal(resp.statusCode, 200);
                             assert.equal(resp.headers['content-type'],
                                 'application/x-www-form-urlencoded');
-                            var args = OAuthClient.getParameterMap(
-                                OAuthClient.decodeForm(body));
+                            var args = qsparse(body);
                             assert.equal(args.oauth_token, 'nnch734d00sl2jdk');
                             assert.equal(args.oauth_token_secret, 'pfkkdhi9sl3r4s00');
 

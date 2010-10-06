@@ -60,6 +60,7 @@ ExampleProvider.prototype = {
             callback(null, {
                 token: 'hh5s93j4hdidpola',
                 token_secret: 'hdhd0244k9j7ao03',
+                verifier: 'hfdp7dh39dks9884',
                 token_type: 'request'
             });
         else
