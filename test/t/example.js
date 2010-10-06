@@ -10,19 +10,19 @@ var CONSUMER_KEY = 'dpf43f3p2l4k3l03',
     test_request = require('request').test_request,
     oauth_request = require('request').oauth_request,
     qsparse = require('querystring').parse,
-    start_server = require('example').start_server;
+    example = require('example');
 
 
-start_server(function(server) {
+example.start_server(function(server) {
     // Test a PLAINTEXT request...
     oauth_request({
         parameters: [
-            ['oauth_consumer_key', CONSUMER_KEY],
+            ['oauth_consumer_key', example.CONSUMER_KEY],
             ['oauth_signature_method', 'PLAINTEXT'],
             ['oauth_callback','http://printer.example.com/request_token_ready']
         ],
         accessor: {
-            consumerSecret: CONSUMER_SECRET,
+            consumerSecret: example.CONSUMER_SECRET,
         },
         action: 'http://photos.example.com/request_token',
         method: 'GET'
@@ -31,8 +31,8 @@ start_server(function(server) {
                 'application/x-www-form-urlencoded');
 
             var result = qsparse(body);
-            assert.equal(result.oauth_token, 'hh5s93j4hdidpola');
-            assert.equal(result.oauth_token_secret, 'hdhd0244k9j7ao03');
+            assert.equal(result.oauth_token, example.REQUEST_TOKEN);
+            assert.equal(result.oauth_token_secret, example.REQUEST_TOKEN_SECRET);
             assert.equal(result.oauth_callback_confirmed, 'true');
 
             var req_token_secret = result.oauth_token_secret;
@@ -47,19 +47,19 @@ start_server(function(server) {
                     var redir = url.parse(resp.headers.location, true);
                     assert.equal(redir.host, 'printer.example.com');
                     assert.equal(redir.pathname, '/request_token_ready');
-                    assert.equal(redir.query.oauth_token, 'hh5s93j4hdidpola');
-                    assert.equal(redir.query.oauth_verifier, 'hfdp7dh39dks9884');
+                    assert.equal(redir.query.oauth_token, example.REQUEST_TOKEN);
+                    assert.equal(redir.query.oauth_verifier, example.VERIFIER);
 
                     // Exchange for an access token...
                     oauth_request({
                         parameters: [
-                            ['oauth_consumer_key', CONSUMER_KEY],
-                            ['oauth_token', 'hh5s93j4hdidpola'],
+                            ['oauth_consumer_key', example.CONSUMER_KEY],
+                            ['oauth_token', example.REQUEST_TOKEN],
                             ['oauth_signature_method', 'PLAINTEXT'],
                             ['oauth_verifier',redir.query.oauth_verifier]
                             ],
                         accessor: {
-                            consumerSecret: CONSUMER_SECRET,
+                            consumerSecret: example.CONSUMER_SECRET,
                             tokenSecret: req_token_secret
                         },
                         action: 'http://photos.example.com/access_token',
@@ -69,8 +69,9 @@ start_server(function(server) {
                             assert.equal(resp.headers['content-type'],
                                 'application/x-www-form-urlencoded');
                             var args = qsparse(body);
-                            assert.equal(args.oauth_token, 'nnch734d00sl2jdk');
-                            assert.equal(args.oauth_token_secret, 'pfkkdhi9sl3r4s00');
+                            assert.equal(args.oauth_token, example.ACCESS_TOKEN);
+                            assert.equal(args.oauth_token_secret,
+                                example.ACCESS_TOKEN_SECRET);
 
                             server.close();
                     });

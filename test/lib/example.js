@@ -5,6 +5,13 @@ var TEST_PORT = parseInt(process.env['TEST_PORT']),
     CONSUMER_KEY = 'dpf43f3p2l4k3l03',
     CONSUMER_SECRET = 'kd94hf93k423kf44',
 
+    REQUEST_TOKEN = 'hh5s93j4hdidpola',
+    REQUEST_TOKEN_SECRET = 'hdhd0244k9j7ao03',
+    VERIFIER = 'hfdp7dh39dks9884',
+
+    ACCESS_TOKEN = 'nnch734d00sl2jdk',
+    ACCESS_TOKEN_SECRET = 'pfkkdhi9sl3r4s00',
+
     assert = require('assert'),
     connect = require('connect'),
     oauth = require('oauth');
@@ -27,20 +34,20 @@ ExampleProvider.prototype = {
         assert.equal(key, CONSUMER_KEY);
         assert.equal(oauth_callback, 'http://printer.example.com/request_token_ready');
         callback(null, {
-            token: 'hh5s93j4hdidpola',
-            token_secret: 'hdhd0244k9j7ao03',
+            token: REQUEST_TOKEN,
+            token_secret: REQUEST_TOKEN_SECRET,
             token_type: 'request'
         });
     },
 
     generateAccessToken: function(request_token, callback) {
-        if(request_token != 'hh5s93j4hdidpola')
+        if(request_token != REQUEST_TOKEN)
             callback("Invalid request token");
 
         else
             callback(null, {
-                access_token: 'nnch734d00sl2jdk',
-                token_secret: 'pfkkdhi9sl3r4s00'
+                access_token: ACCESS_TOKEN,
+                token_secret: ACCESS_TOKEN_SECRET
             });
     },
 
@@ -50,17 +57,17 @@ ExampleProvider.prototype = {
         else
             callback(null, {
                 token: oauth_token,
-                verifier: 'hfdp7dh39dks9884',
+                verifier: VERIFIER,
                 callback: 'http://printer.example.com/request_token_ready'
             });
     },
 
     getTokenByKey: function(key, callback) {
-        if(key == 'hh5s93j4hdidpola')
+        if(key == REQUEST_TOKEN)
             callback(null, {
-                token: 'hh5s93j4hdidpola',
-                token_secret: 'hdhd0244k9j7ao03',
-                verifier: 'hfdp7dh39dks9884',
+                token: REQUEST_TOKEN,
+                token_secret: REQUEST_TOKEN_SECRET,
+                verifier: VERIFIER,
                 token_type: 'request'
             });
         else
@@ -104,4 +111,13 @@ function start_server(callback) {
     });
 }
 
-module.exports.start_server = start_server;
+module.exports = {
+    start_server: start_server,
+    CONSUMER_KEY: CONSUMER_KEY,
+    CONSUMER_SECRET: CONSUMER_SECRET,
+    REQUEST_TOKEN: REQUEST_TOKEN,
+    REQUEST_TOKEN_SECRET: REQUEST_TOKEN_SECRET,
+    VERIFIER: VERIFIER,
+    ACCESS_TOKEN: ACCESS_TOKEN,
+    ACCESS_TOKEN_SECRET: ACCESS_TOKEN_SECRET
+};
