@@ -70,6 +70,12 @@ ExampleProvider.prototype = {
                 verifier: VERIFIER,
                 token_type: 'request'
             });
+        else if(key == ACCESS_TOKEN)
+            callback(null, {
+                token: ACCESS_TOKEN,
+                token_secret: ACCESS_TOKEN_SECRET,
+                token_type: 'access'
+            });
         else
             callback('Invalid/expired token');
     },
@@ -87,7 +93,6 @@ ExampleProvider.prototype = {
 
 function start_server(callback) {
     var server = connect.createServer(
-        connect.logger(),
         connect.bodyDecoder(),
         oauth.OAuth({
             oauth_provider: new ExampleProvider(),

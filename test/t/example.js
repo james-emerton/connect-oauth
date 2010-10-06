@@ -2,10 +2,7 @@
 // Run the OAuth Example code as in Appendix A of the spec...
 
 
-var CONSUMER_KEY = 'dpf43f3p2l4k3l03',
-    CONSUMER_SECRET = 'kd94hf93k423kf44',
-
-    assert = require('assert'),
+var assert = require('assert'),
     url = require('url'),
     test_request = require('request').test_request,
     oauth_request = require('request').oauth_request,

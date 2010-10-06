@@ -32,6 +32,11 @@ function run_tests(queue) {
         else
             sys.print("OK\n");
 
+        if(stdout) {
+            sys.print('STDOUT: \n');
+            sys.print(stdout.replace(/^/gm, '| ')+'\n');
+        }
+
         // Continue testing...
         if(queue.length)
             run_tests(queue);
