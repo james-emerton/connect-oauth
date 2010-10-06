@@ -78,16 +78,7 @@ ExampleProvider.prototype = {
             });
         else
             callback('Invalid/expired token');
-    },
-
-    previousRequestToken: function() {},
-    tokenByConsumer: function() {},
-    validToken: function() {},
-    cleanRequestTokens: function() {},
-    validateNoReplay: function() {},
-    associateTokenToUser: function() {},
-    tokenByTokenAndVerifier: function() {},
-    userIdByToken: function() {}
+    }
 }
 
 
