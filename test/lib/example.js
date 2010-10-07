@@ -84,20 +84,14 @@ ExampleProvider.prototype = {
 
 function start_server(callback) {
     var server = connect.createServer(
-        connect.bodyDecoder(),
-        oauth.OAuth({
+        oauth.createProvider({
             oauth_provider: new ExampleProvider(),
+            realm: 'http://photos.example.net/',
             request_token_url: '/request_token',
             authorize_url: '/authorize',
             access_token_url: '/access_token',
 
             authenticate_provider: function(req, resp) {
-            },
-
-            authorize_provider: function(req, resp) {
-            },
-
-            authorization_finished_provider: function(req, resp) {
             }
         })
     );
