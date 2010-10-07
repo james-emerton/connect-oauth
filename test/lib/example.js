@@ -46,7 +46,7 @@ ExampleProvider.prototype = {
 
         else
             callback(null, {
-                access_token: ACCESS_TOKEN,
+                token: ACCESS_TOKEN,
                 token_secret: ACCESS_TOKEN_SECRET
             });
     },
@@ -78,6 +78,18 @@ ExampleProvider.prototype = {
             });
         else
             callback('Invalid/expired token');
+    },
+
+    validateNoReplay: function(timestamp, nonce, callback) {
+        if(timestamp < this.lastTimestamp ||
+            (timestamp == this.lastTimestamp && nonce == this.lastNonce)) {
+            callback("replay detected");
+        }
+        else {
+            this.lastTimestamp = timestamp;
+            this.lastNonce = nonce;
+            callback();
+        }
     }
 }
 

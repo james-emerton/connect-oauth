@@ -44,7 +44,7 @@ example.start_server(function(server) {
                         method: 'GET'
                         }, function(resp, body) {
                             // Request should fail...
-                            assert.equal(resp.statusCode, 400);
+                            assert.equal(resp.statusCode, 401);
                             server.close();
                     });
             });
