@@ -28,6 +28,8 @@ example.start_server(function(server) {
         method: 'GET'
         }, function(resp, body) {
             assert.equal(resp.statusCode, 401);
+            assert.equal(resp.headers['www-authenticate'],
+                'OAuth realm="http://photos.example.net/"');
             server.close();
     });
 });
