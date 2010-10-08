@@ -51,15 +51,13 @@ ExampleProvider.prototype = {
             });
     },
 
-    authorizeToken: function(req, oauth_token, callback) {
-        if(req.body.username != 'jane' || req.body.password != 'mypassword')
-            callback('Invalid username or password');
-        else
-            callback(null, {
-                token: oauth_token,
-                verifier: VERIFIER,
-                callback: 'http://printer.example.com/request_token_ready'
-            });
+    authorizeToken: function(user, oauth_token, callback) {
+        callback(null, {
+            token: oauth_token,
+            verifier: VERIFIER,
+            user: user,
+            callback: 'http://printer.example.com/request_token_ready'
+        });
     },
 
     getTokenByKey: function(key, callback) {
@@ -103,7 +101,16 @@ function start_server(callback) {
             authorize_url: '/authorize',
             access_token_url: '/access_token',
 
-            authenticate_provider: function(req, resp) {
+            authorize_form_provider: function(req, resp) {
+                resp.writeHead(200, {'Content-Type': 'text/plain'});
+                resp.end('Please POST a username/password');
+            },
+
+            authorize_provider: function(req, resp, callback) {
+                if(req.body.username != 'jane' || req.body.password != 'mypassword')
+                    callback('Invalid username or password');
+                else
+                    callback(null, {userid: 12, username: 'jane'});
             }
         })
     );
