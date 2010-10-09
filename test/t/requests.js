@@ -9,6 +9,7 @@ var assert = require('assert'),
 example.start_server(function(server) {
     // Add a protected resource...
     server.use('/test', function(req, resp) {
+        assert.equal(url.parse(req.url, true).query.testparam, 'cheese');
         resp.writeHead(200, {'Content-Type': 'text/plain'});
         resp.end('Protected stuff!');
     });
@@ -22,7 +23,7 @@ example.start_server(function(server) {
             consumerSecret: example.CONSUMER_SECRET,
             tokenSecret: example.ACCESS_TOKEN_SECRET
         },
-        action: 'http://photos.example.com/test',
+        action: 'http://photos.example.com/test?testparam=cheese',
         method: 'GET'
     }, function(resp, body) {
         assert.equal(resp.statusCode, 200);

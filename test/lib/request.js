@@ -28,11 +28,14 @@ function oauth_request(msg, callback) {
     OAuthClient.completeRequest(msg, msg.accessor);
 
     var urlobj = url.parse(msg.action, true),
-        newurl = { pathname: urlobj.pathname },
+        newurl = { pathname: urlobj.pathname, query: urlobj.query || {} },
         use_auth_header = msg.auth_header || false;
 
-    if(msg.method == 'GET' && !use_auth_header)
-        newurl.query = OAuthClient.getParameterMap(msg.parameters);
+    if(msg.method == 'GET' && !use_auth_header) {
+        var params = OAuthClient.getParameterMap(msg.parameters);
+        for(var p in params)
+            newurl.query[p] = params[p];
+    }
 
     test_request(msg.method, url.format(newurl),
         {'Host': urlobj.hostname}, null, callback);
